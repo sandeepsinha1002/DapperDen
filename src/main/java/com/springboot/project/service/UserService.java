@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.springboot.project.model.User;
 import com.springboot.project.repository.UserRepository;
 
+
+
 @Service
 public class UserService {
 
@@ -16,7 +18,7 @@ public class UserService {
         this.userRepository=userRepository;
     }
 
-    public User createUser(User user)
+    public User createUser( User user)
     {
         user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user);

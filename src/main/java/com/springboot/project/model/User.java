@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -17,6 +19,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -25,12 +31,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+    @NotBlank
+    @Size(min = 2,max = 20)
     private String name;
 
+    @NotBlank(message = "Name cannot be blank")
+    @Email(message = "Invalid email format")
     private String email;
 
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
+    @NotBlank(message = "Phone number cannot be blank")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number format. It should be a 10-digit number.")
     private String phoneNumber;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
