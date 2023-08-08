@@ -29,22 +29,12 @@ public class UserController {
 
     // private User user = new User();
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser);
+    // @PostMapping
+    // public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    //     User createdUser = userService.createUser(user);
+    //     return ResponseEntity.ok(createdUser);
+    // }
+
+
+
     }
-
-
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
-        User user = userService.getUser(userId);
-        // System.out.println(name);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-}

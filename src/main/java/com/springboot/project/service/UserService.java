@@ -4,27 +4,16 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.springboot.project.exception.UserException;
 import com.springboot.project.model.User;
 import com.springboot.project.repository.UserRepository;
 
 
 
 @Service
-public class UserService {
+public interface UserService {
+    public User findUserById(Long userId) throws UserException;
 
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository){
-        this.userRepository=userRepository;
-    }
-
-    public User createUser( User user)
-    {
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
-    }
-    public User getUser(Long userId) {
-        return userRepository.findById(userId).orElse(null);
-    }
+    public User findUserProfileByJwt(String jwt) throws UserException;
     
 }
