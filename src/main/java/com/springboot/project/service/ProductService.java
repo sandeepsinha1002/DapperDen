@@ -1,48 +1,31 @@
 package com.springboot.project.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.springboot.project.exception.ProductException;
 import com.springboot.project.model.Product;
 import com.springboot.project.repository.ProductRepository;
 
 @Service
-public class ProductService {
-    private final ProductRepository productRepository;
+public interface ProductService {
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    public Product createProduct(CreateProductRequest req) throws ProductException;
 
-    public Product createProduct(Product product)
-    {
-        return productRepository.save(product);
-    }
-    public Product getProduct(Long productId)
-    {
-        return productRepository.findById(productId).orElse(null);
-    }
-    public Product updateProduct(Long productId, Product updatedProduct)
-    {
-        Product product = productRepository.findById(productId).orElse(null);
-        if(product!=null)
-        {
-            product.setTitle(updatedProduct.getTitle());
-            product.setTitle(updatedProduct.getTitle());
-            product.setDescription(updatedProduct.getDescription());
-            product.setQuantity(updatedProduct.getQuantity());
-            product.setPrice(updatedProduct.getPrice());
-            product.setImageUrl(updatedProduct.getImageUrl());
-            return productRepository.save(product);
-        } 
-        return null;
-    }
-    public boolean deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElse(null);
-        if (product != null) {
-            productRepository.delete(product);
-            return true;
-        }
-        return false;
-    }
+    public String deleteProduct(Long prodcutId) throws ProductException;
+
+    public Product updateProduct(Long productId,Product product)throws ProductException;
     
+	public List<Product> getAllProducts();
+
+
+    public Product findProductById(Long id) throws ProductException;
+
+    public List<Product> findProductBycategory(String category);
+
+    public List<Product> searchProduct(String query);
+
+    public Page<Product> getAllProduct(String category, List<String>colors, List<String> sizes, Integer minPrice, Integer maxPrice, Integer minDiscount,String sort, String stock, Integer pageNumber, Integer pageSize);
 }
