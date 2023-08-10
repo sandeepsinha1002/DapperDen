@@ -1,6 +1,9 @@
 package com.springboot.project.controller;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.project.config.JwtTokenProvider;
 import com.springboot.project.exception.UserException;
+import com.springboot.project.model.Address;
+import com.springboot.project.model.PaymentInformation;
 import com.springboot.project.model.User;
 import com.springboot.project.repository.UserRepository;
 import com.springboot.project.request.LoginRequest;
@@ -45,6 +50,11 @@ public class AuthController {
         String email = user.getEmail();
         String password = user.getPassword();
         String name = user.getName();
+        String phoneNumber = user.getPhoneNumber();
+        LocalDateTime createdAt = user.getCreatedAt();
+        List<Address> address = user.getAddress();
+        List<PaymentInformation> paymentInformation=user.getPaymentInformation();
+
 
         User isEmailExist = userRepository.findByEmail(email);
 
@@ -57,6 +67,11 @@ public class AuthController {
         createdUser.setEmail(email);
         createdUser.setPassword(passwordEncoder.encode(password));
         createdUser.setName(name);
+        createdUser.setPhoneNumber(phoneNumber);
+        createdUser.setAddress(address);
+        createdUser.setPaymentInformation(paymentInformation);
+        // createdUser.setCreatedAt(createdAt);
+
 
         User savedUser = userRepository.save(createdUser);
 
