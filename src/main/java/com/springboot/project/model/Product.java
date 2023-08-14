@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Locale.Category;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
@@ -40,13 +40,25 @@ public class Product {
     @Column(name = "brand")
     private String brand;
 
+    @Column(name = "color")
+    private String color;
+
     @Column(name = "image_url")
     private String imageUrl;
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     @Embedded
     @ElementCollection
-    @Column(name = "sizes")
+    @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
     private Set<Size> sizes = new HashSet<>();
+    
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
@@ -59,15 +71,22 @@ public class Product {
 
     @Column(name = "num_ratings")
     private int numRatings;
+        
+	public Product() {
+		
+	}
 
-    public Product(Long id, String title, String description, int quantity, int price, String brand, String imageUrl,
+    public Product(Long id, String title, String description, int quantity, int price, String brand, String color,
+            String imageUrl,
             Set<Size> sizes, List<Review> reviews, Category category, LocalDateTime createdAt, int numRatings) {
+        super(); 
         this.id = id;
         this.title = title;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
         this.brand = brand;
+        this.color=color;
         this.imageUrl = imageUrl;
         this.sizes = sizes;
         this.reviews = reviews;
@@ -96,9 +115,6 @@ public class Product {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -170,6 +186,10 @@ public class Product {
 
     public void setNumRatings(int numRatings) {
         this.numRatings = numRatings;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }

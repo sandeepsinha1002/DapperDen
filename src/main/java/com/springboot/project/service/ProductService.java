@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.project.exception.ProductException;
 import com.springboot.project.model.Product;
-import com.springboot.project.repository.ProductRepository;
+import com.springboot.project.request.CreateProductRequest;
 
 @Service
 public interface ProductService {
@@ -27,5 +27,5 @@ public interface ProductService {
 
     public List<Product> searchProduct(String query);
 
-    public Page<Product> getAllProduct(String category, List<String>colors, List<String> sizes, Integer minPrice, Integer maxPrice, Integer minDiscount,String sort, String stock, Integer pageNumber, Integer pageSize);
+    public Page<Product> getAllProduct(String category, List<String>colors, List<String> sizes, Integer minPrice, Integer maxPrice,String sort, String stock, Integer pageNumber, Integer pageSize);
 }
