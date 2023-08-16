@@ -117,7 +117,7 @@ public class ProductServiceImplementation implements ProductService {
         if (optional.isPresent()) {
             return optional.get();
         }
-        throw new ProductException("product not found with id " + id);
+        throw new ProductException("Product not found with id " + id);
     }
 
     @Override
