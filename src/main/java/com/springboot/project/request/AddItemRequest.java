@@ -1,5 +1,6 @@
 package com.springboot.project.request;
 
+
 public class AddItemRequest {
 
     private Long productId;
@@ -14,12 +15,7 @@ public class AddItemRequest {
     public void setProductId(Long productId) {
         this.productId = productId;
     }
-    public String getSize() {
-        return size;
-    }
-    public void setSize(String size) {
-        this.size = size;
-    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -32,6 +28,14 @@ public class AddItemRequest {
     public void setPrice(Integer price) {
         this.price = price;
     }
+    public String getSize() {
+        return size;
+    }
+    public void setSize(String size) {
+        this.size = size;
+    }
+   
+
     
     
 }
