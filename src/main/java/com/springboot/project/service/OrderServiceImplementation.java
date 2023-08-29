@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.project.exception.OrderException;
 import com.springboot.project.model.Address;
 import com.springboot.project.model.Cart;
@@ -19,6 +21,7 @@ import com.springboot.project.repository.UserRepository;
 import com.springboot.project.user.domain.OrderStatus;
 import com.springboot.project.user.domain.PaymentStatus;
 
+@Service
 public class OrderServiceImplementation implements OrderService {
 
     private OrderRepository orderRepository;
@@ -90,9 +93,10 @@ public class OrderServiceImplementation implements OrderService {
     public Order findOrderbyId(Long OrderId) throws OrderException {
       
         Optional<Order> opt =orderRepository.findById(OrderId);
+        System.out.println("optional" + opt);
         if(opt.isPresent())
         {
-            opt.get();
+            return opt.get();
         }
         throw new OrderException("Order does not exist with id  " + OrderId);
     }
@@ -100,7 +104,9 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public List<Order> usersOrderHistory(Long userId) 
     {
+        System.out.println("user : "+userId);
         List<Order> orders= orderRepository.getUsersOrders(userId);
+        System.out.println("orders  "+ orders);
         return orders;
     }
 
@@ -134,7 +140,7 @@ public class OrderServiceImplementation implements OrderService {
     }
 
     @Override
-    public Order cancledOrder(Long orderId) throws OrderException {
+    public Order canceledOrder(Long orderId) throws OrderException {
         Order order = findOrderbyId(orderId);
         order.setOrderStatus(OrderStatus.CANCELLED);
         return orderRepository.save(order);

@@ -2,6 +2,8 @@ package com.springboot.project.service;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.project.exception.CartItemException;
 import com.springboot.project.exception.UserException;
 import com.springboot.project.model.Cart;
@@ -12,6 +14,7 @@ import com.springboot.project.model.User;
 import com.springboot.project.repository.CartItemRepository;
 import com.springboot.project.repository.CartRepository;
 
+@Service
 public class CartItemServiceImplementation implements CartItemService {
 
     private CartItemRepository cartItemRepository;

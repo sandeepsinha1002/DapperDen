@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.config.JwtTokenProvider;
 import com.springboot.project.exception.UserException;
 import com.springboot.project.model.Address;
+import com.springboot.project.model.Cart;
 import com.springboot.project.model.PaymentInformation;
 import com.springboot.project.model.User;
 import com.springboot.project.repository.UserRepository;
 import com.springboot.project.request.LoginRequest;
 import com.springboot.project.response.AuthResponse;
+import com.springboot.project.service.CartService;
 import com.springboot.project.service.CustomerUserDetails;
 
 @RestController
@@ -35,13 +37,16 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
     private PasswordEncoder passwordEncoder;
     private CustomerUserDetails customerUserDetails;
+    private CartService cartService;
 
-    public AuthController(UserRepository userRepository,PasswordEncoder passwordEncoder,CustomerUserDetails customerUserDetails,JwtTokenProvider jwtTokenProvider)
-    {
-        this.userRepository=userRepository;
-        this.passwordEncoder=passwordEncoder;
-        this.customerUserDetails=customerUserDetails;
-        this.jwtTokenProvider=jwtTokenProvider;
+    
+    public AuthController(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
+            PasswordEncoder passwordEncoder, CustomerUserDetails customerUserDetails, CartService cartService) {
+        this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.passwordEncoder = passwordEncoder;
+        this.customerUserDetails = customerUserDetails;
+        this.cartService = cartService;
     }
 
     @PostMapping("/signup")
@@ -74,7 +79,8 @@ public class AuthController {
 
 
         User savedUser = userRepository.save(createdUser);
-
+        Cart cart = cartService.createCart(savedUser);
+        
         Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(),savedUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

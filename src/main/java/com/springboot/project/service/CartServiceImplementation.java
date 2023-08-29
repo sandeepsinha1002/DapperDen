@@ -1,5 +1,7 @@
 package com.springboot.project.service;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.project.exception.ProductException;
 import com.springboot.project.model.Cart;
 import com.springboot.project.model.CartItem;
@@ -8,6 +10,7 @@ import com.springboot.project.model.User;
 import com.springboot.project.repository.CartRepository;
 import com.springboot.project.request.AddItemRequest;
 
+@Service
 public class CartServiceImplementation implements CartService{
 
     private CartRepository cartRepository;
@@ -31,6 +34,7 @@ public class CartServiceImplementation implements CartService{
     @Override
     public String addCartItem(Long userId, AddItemRequest req) throws ProductException {
         Cart cart = cartRepository.findByUserId(userId);
+        System.out.println("cart : : : "+cart);
         Product product = productService.findProductById(req.getProductId());
 
         CartItem isPresent = cartItemService.isCartItemExist(cart, product,req.getSize(), userId);

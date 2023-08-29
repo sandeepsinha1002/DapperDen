@@ -3,6 +3,8 @@ package com.springboot.project.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.project.exception.ProductException;
 import com.springboot.project.model.Product;
 import com.springboot.project.model.Review;
@@ -11,6 +13,7 @@ import com.springboot.project.repository.ProductRepository;
 import com.springboot.project.repository.ReviewRepository;
 import com.springboot.project.request.ReviewRequest;
 
+@Service
 public class ReviewServiceImplementation implements ReviewService{
     private ReviewRepository reviewRepository;
 	private ProductService productService;

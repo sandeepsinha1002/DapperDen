@@ -43,7 +43,7 @@ public class User {
     @NotBlank(message = "Password cannot be blank")
     private String password;
 
-    @NotBlank(message = "Phone number cannot be blank")
+  
     @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number format. It should be a 10-digit number.")
     private String phoneNumber;
 
