@@ -9,12 +9,6 @@ public class CreateProductRequest {
     
     private String title;
 
-    private String description;
-
-    private int price;
-
-    private int quantity;
-
     public String getTitle() {
         return title;
     }
@@ -81,6 +75,12 @@ public class CreateProductRequest {
     public void setThirdLevelCategory(String thirdLevelCategory) {
         this.thirdLevelCategory = thirdLevelCategory;
     }
+    private String description;
+
+    private int price;
+
+    private int quantity;
+    
     private String brand;
 
     private String color;

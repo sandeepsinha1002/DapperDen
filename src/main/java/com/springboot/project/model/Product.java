@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
@@ -56,8 +55,8 @@ public class Product {
 
     @Embedded
     @ElementCollection
-    @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
-    private Set<Size> sizes = new HashSet<>();
+    @Column(name = "sizes")
+    private Set<Size> sizes=new HashSet<>();
     
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -103,13 +102,6 @@ public class Product {
         this.brand = brand;
     }
 
-    public Set<Size> getSizes() {
-        return sizes;
-    }
-
-    public void setSizes(Set<Size> sizes) {
-        this.sizes = sizes;
-    }
 
     public Category getCategory() {
         return category;
@@ -124,8 +116,18 @@ public class Product {
         this.createdAt = createdAt;
     }
 
+ 
+
     public Long getId() {
         return id;
+    }
+
+    public Set<Size> getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(Set<Size> sizes) {
+        this.sizes = sizes;
     }
 
     public void setId(Long id) {

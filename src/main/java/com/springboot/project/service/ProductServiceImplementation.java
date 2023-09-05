@@ -78,6 +78,7 @@ public class ProductServiceImplementation implements ProductService {
 
         Product savedProduct = productRepository.save(product);
 
+        System.out.println(" size  ---- "+product.getSizes());
         System.out.println("products - " + product);
 
         return savedProduct;
