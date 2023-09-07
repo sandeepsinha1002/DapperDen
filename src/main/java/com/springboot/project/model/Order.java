@@ -3,8 +3,6 @@ package com.springboot.project.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
-
 import com.springboot.project.user.domain.OrderStatus;
 
 import jakarta.persistence.CascadeType;
@@ -27,9 +25,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="order_id")
+    @Column(name = "order_id")
     private String orderId;
-  
+
     @ManyToOne
     private User user;
 
@@ -45,13 +43,13 @@ public class Order {
 
     @Embedded
     private PaymentDetails paymentDetails = new PaymentDetails();
-    
+
     private double totalPrice;
 
     private OrderStatus orderStatus;
-    
+
     private int totalItem;
-    
+
     private LocalDateTime createdAt;
 
     public Long getId() {
@@ -169,14 +167,5 @@ public class Order {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    
-
-
-
-
-    
-    
-
 
 }
