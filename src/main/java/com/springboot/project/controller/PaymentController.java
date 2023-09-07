@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +24,6 @@ import com.springboot.project.repository.OrderRepository;
 import com.springboot.project.response.ApiResponse;
 import com.springboot.project.response.PaymentLinkResponse;
 import com.springboot.project.service.OrderService;
-import com.springboot.project.service.UserService;
 import com.springboot.project.user.domain.OrderStatus;
 import com.springboot.project.user.domain.PaymentStatus;
 
@@ -44,12 +42,10 @@ public class PaymentController {
 
 	
 	private OrderService orderService;
-	private UserService userService;
 	private OrderRepository orderRepository;
 	
-	public PaymentController(OrderService orderService,UserService userService,OrderRepository orderRepository) {
+	public PaymentController(OrderService orderService,OrderRepository orderRepository) {
 		this.orderService=orderService;
-		this.userService=userService;
 		this.orderRepository=orderRepository;
 	}
 	
@@ -68,9 +64,6 @@ public class PaymentController {
 		      JSONObject paymentLinkRequest = new JSONObject();
 		      paymentLinkRequest.put("amount",order.getTotalPrice()* 100);
 		      paymentLinkRequest.put("currency","INR"); 
-//		      paymentLinkRequest.put("expire_by",1691097057);
-//		      paymentLinkRequest.put("reference_id",order.getId().toString());
-		     
 
 		      // Create a JSON object with the customer details
 		      JSONObject customer = new JSONObject();
@@ -90,14 +83,11 @@ public class PaymentController {
 
 		      // Set the callback URL and method
 		      paymentLinkRequest.put("callback_url","http://localhost:3000/payment/"+orderId);
-		      paymentLinkRequest.put("callback_method","get");
-                System.out.println(paymentLinkRequest);   
+		      paymentLinkRequest.put("callback_method","get");   
 
 
 		      // Create the payment link using the paymentLink.create() method
 		      PaymentLink payment = razorpay.paymentLink.create(paymentLinkRequest);
-
-              System.out.println("payment _ _ _ _ _ _" + payment);
 		      
 		      String paymentLinkId = payment.get("id");
 		      String paymentLinkUrl = payment.get("short_url");
@@ -110,15 +100,10 @@ public class PaymentController {
 		      orderRepository.save(order);
 		      
 		   // Print the payment link ID and URL
-		      System.out.println("Payment link ID: " + paymentLinkId);
-		      System.out.println("Payment link URL: " + paymentLinkUrl);
-		      System.out.println("Order Id : "+fetchedPayment.get("order_id")+fetchedPayment);
-		      
 		      return new ResponseEntity<PaymentLinkResponse>(res,HttpStatus.ACCEPTED);
 		      
 		    } catch (RazorpayException e) {
 		    	
-		      System.out.println("Error creating payment link: " + e.getMessage());
 		      throw new RazorpayException(e.getMessage());
 		    }
 		
@@ -132,26 +117,18 @@ public class PaymentController {
 	  Order order =orderService.findOrderbyId(orderId);
 	
 	  try {
-		
-		
 		Payment payment = razorpay.payments.fetch(paymentId);
-		System.out.println("payment details --- "+payment+payment.get("status"));
-		
-		if(payment.get("status").equals("captured")) {
-			System.out.println("payment details --- "+payment+payment.get("status"));
-		  
+		if(payment.get("status").equals("captured")) 
+		{
 			order.getPaymentDetails().setPaymentId(paymentId);
 			order.getPaymentDetails().setStatus(PaymentStatus.COMPLETED);
 			order.setOrderStatus(OrderStatus.PLACED);
-//			order.setOrderItems(order.getOrderItems());
-			System.out.println(order.getPaymentDetails().getStatus()+"payment status ");
 			orderRepository.save(order);
 		}
 		ApiResponse res=new ApiResponse("your order get placed", true);
 	      return new ResponseEntity<ApiResponse>(res,HttpStatus.OK);
 	      
 	} catch (Exception e) {
-		System.out.println("errrr payment -------- ");
 		new RedirectView("https://localhost:3000/payment/failed");
 		throw new RazorpayException(e.getMessage());
 	}

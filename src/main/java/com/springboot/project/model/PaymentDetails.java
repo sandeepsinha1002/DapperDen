@@ -11,7 +11,9 @@ public class PaymentDetails {
 	private String razorpayPaymentLinkReferenceId;
 	private String razorpayPaymentLinkStatus;
 	private String razorpayPaymentId​;
+    
     public PaymentDetails() {
+      // TODO document why this constructor is empty
     }
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;

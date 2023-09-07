@@ -20,14 +20,13 @@ import com.springboot.project.request.CreateProductRequest;
 @Service
 public class ProductServiceImplementation implements ProductService {
 
-    private ProductRepository productRepository;
-    private UserService userService;
+    private ProductRepository productRepository;;
     private CategoryRepository categoryRepository;
 
-    public ProductServiceImplementation(ProductRepository productRepository, UserService userService,
+    public ProductServiceImplementation(ProductRepository productRepository,
             CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
-        this.userService = userService;
+
         this.categoryRepository = categoryRepository;
     }
 
@@ -78,9 +77,6 @@ public class ProductServiceImplementation implements ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        System.out.println(" size  ---- "+product.getSizes());
-        System.out.println("products - " + product);
-
         return savedProduct;
     }
 
@@ -123,51 +119,40 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public List<Product> findProductBycategory(String category) {
-        System.out.println("category --- " + category);
-
-        List<Product> products = productRepository.findByCategory(category);
-
-        return products;
+        return productRepository.findByCategory(category);
     }
 
     @Override
     public List<Product> searchProduct(String query) {
-        List<Product> products = productRepository.searchProduct(query);
-        return products;
+        return productRepository.searchProduct(query);
     }
 
     @Override
     public Page<Product> getAllProduct(String category, List<String> colors, List<String> sizes, Integer minPrice,
-        Integer maxPrice, String sort, String stock, Integer pageNumber, Integer pageSize) {
+            Integer maxPrice, String sort, String stock, Integer pageNumber, Integer pageSize) {
         PageRequest pageable = PageRequest.of(pageNumber, pageSize);
         List<Product> products = productRepository.filterProducts(category, minPrice, maxPrice, sort);
 
         if (!colors.isEmpty()) {
-			products = products.stream()
-			        .filter(p -> colors.stream().anyMatch(c -> c.equalsIgnoreCase(p.getColor())))
-			        .collect(Collectors.toList());
-		
-		
-		}
-		if(stock!=null) {
+            products = products.stream()
+                    .filter(p -> colors.stream().anyMatch(c -> c.equalsIgnoreCase(p.getColor())))
+                    .collect(Collectors.toList());
 
-			if(stock.equals("in_stock")) {
-				products=products.stream().filter(p->p.getQuantity()>0).collect(Collectors.toList());
-			}
-			else if (stock.equals("out_of_stock")) {
-				products=products.stream().filter(p->p.getQuantity()<1).collect(Collectors.toList());				
-			}
-				
-					
-		}
-		int startIndex = (int) pageable.getOffset();
-		int endIndex = Math.min(startIndex + pageable.getPageSize(), products.size());
+        }
+        if (stock != null) {
 
-		List<Product> pageContent = products.subList(startIndex, endIndex);
-		Page<Product> filteredProducts = new PageImpl<>(pageContent, pageable, products.size());
-	    return filteredProducts; 
+            if (stock.equals("in_stock")) {
+                products = products.stream().filter(p -> p.getQuantity() > 0).collect(Collectors.toList());
+            } else if (stock.equals("out_of_stock")) {
+                products = products.stream().filter(p -> p.getQuantity() < 1).collect(Collectors.toList());
+            }
 
-        
+        }
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = Math.min(startIndex + pageable.getPageSize(), products.size());
+
+        List<Product> pageContent = products.subList(startIndex, endIndex);
+        return new PageImpl<>(pageContent, pageable, products.size());
 
     }
 

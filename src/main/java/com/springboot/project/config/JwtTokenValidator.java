@@ -1,6 +1,5 @@
 package com.springboot.project.config;
 
-import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.List;
 
@@ -11,8 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,10 +28,8 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		String jwt = request.getHeader(JwtConstant.JWT_HEADER);
-		System.out.println("jwt ------ "+jwt);
 		if(jwt!=null) {
 			jwt=jwt.substring(7);
-			System.out.println("jwt ------ "+jwt);
 			try {
 				
 				SecretKey key= Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
@@ -51,7 +46,6 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 				
 			} catch (Exception e) {
-				// TODO: handle exception
 				throw new BadCredentialsException("invalid token...");
 			}
 		}

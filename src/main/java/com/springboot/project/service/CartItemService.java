@@ -7,7 +7,6 @@ import com.springboot.project.exception.UserException;
 import com.springboot.project.model.Cart;
 import com.springboot.project.model.CartItem;
 import com.springboot.project.model.Product;
-import com.springboot.project.model.Size;
 
 @Service
 public interface CartItemService {

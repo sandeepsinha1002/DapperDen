@@ -50,9 +50,7 @@ public class OrderController {
 	String jwt) throws OrderException, UserException{
 		
 		User user=userService.findUserProfileByJwt(jwt);
-		System.out.println(user.getName());
 		List<Order> orders=orderService.usersOrderHistory(user.getId());
-		System.out.println(orders);
 		return new ResponseEntity<>(orders,HttpStatus.ACCEPTED);
 	}
 	
@@ -60,9 +58,7 @@ public class OrderController {
 	public ResponseEntity< Order> findOrderHandler(@PathVariable Long orderId, @RequestHeader("Authorization") 
 	String jwt) throws OrderException, UserException{
 		
-		User user=userService.findUserProfileByJwt(jwt);
 		Order orders=orderService.findOrderbyId(orderId);
-		System.out.println("orders ::" + orders);
 		return new ResponseEntity<>(orders,HttpStatus.ACCEPTED);
 	}
 

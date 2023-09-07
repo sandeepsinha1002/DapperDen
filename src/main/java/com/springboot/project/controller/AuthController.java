@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.config.JwtTokenProvider;
 import com.springboot.project.exception.UserException;
 import com.springboot.project.model.Address;
-import com.springboot.project.model.Cart;
 import com.springboot.project.model.PaymentInformation;
 import com.springboot.project.model.User;
 import com.springboot.project.repository.UserRepository;
 import com.springboot.project.request.LoginRequest;
 import com.springboot.project.response.AuthResponse;
-import com.springboot.project.service.CartService;
+
 import com.springboot.project.service.CustomerUserDetails;
 
 @RestController
@@ -37,16 +36,15 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
     private PasswordEncoder passwordEncoder;
     private CustomerUserDetails customerUserDetails;
-    private CartService cartService;
+
 
     
     public AuthController(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
-            PasswordEncoder passwordEncoder, CustomerUserDetails customerUserDetails, CartService cartService) {
+            PasswordEncoder passwordEncoder, CustomerUserDetails customerUserDetails) {
         this.userRepository = userRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
         this.customerUserDetails = customerUserDetails;
-        this.cartService = cartService;
     }
 
     @PostMapping("/signup")
@@ -75,11 +73,10 @@ public class AuthController {
         createdUser.setPhoneNumber(phoneNumber);
         createdUser.setAddress(address);
         createdUser.setPaymentInformation(paymentInformation);
-        // createdUser.setCreatedAt(createdAt);
+        createdUser.setCreatedAt(createdAt);
 
 
         User savedUser = userRepository.save(createdUser);
-        Cart cart = cartService.createCart(savedUser);
         
         Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(),savedUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -123,7 +120,6 @@ public class AuthController {
             throw new BadCredentialsException("Invalid Username");
         }
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-        	// System.out.println("sign in userDetails - password not match " + userDetails);
             throw new BadCredentialsException("Invalid password");
         }
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

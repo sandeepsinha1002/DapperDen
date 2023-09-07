@@ -28,20 +28,18 @@ public class OrderServiceImplementation implements OrderService {
     private CartService cartService;
     private AddressRepository addressRepository;
     private UserRepository userRepository;
-    private OrderItemService orderItemService;
     private OrderItemRepository orderItemRepository;
 
     
 
 
     public OrderServiceImplementation(OrderRepository orderRepository, CartService cartService,
-            AddressRepository addressRepository, UserRepository userRepository, OrderItemService orderItemService,
+            AddressRepository addressRepository, UserRepository userRepository,
             OrderItemRepository orderItemRepository) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
-        this.orderItemService = orderItemService;
         this.orderItemRepository = orderItemRepository;
     }
 
@@ -93,7 +91,6 @@ public class OrderServiceImplementation implements OrderService {
     public Order findOrderbyId(Long OrderId) throws OrderException {
       
         Optional<Order> opt =orderRepository.findById(OrderId);
-        System.out.println("optional" + opt);
         if(opt.isPresent())
         {
             return opt.get();
@@ -104,9 +101,7 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public List<Order> usersOrderHistory(Long userId) 
     {
-        System.out.println("user : "+userId);
         List<Order> orders= orderRepository.getUsersOrders(userId);
-        System.out.println("orders  "+ orders);
         return orders;
     }
 
@@ -153,7 +148,6 @@ public class OrderServiceImplementation implements OrderService {
 
     @Override
     public void deleteOrder(Long orderId) throws OrderException {
-        Order order=findOrderbyId(orderId);
 		orderRepository.deleteById(orderId);
     }
     

@@ -2,8 +2,6 @@ package com.springboot.project.controller;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,7 +62,6 @@ public class AdminOrderController {
 	public ResponseEntity<ApiResponse> deleteOrderHandler(@PathVariable Long orderId, @RequestHeader("Authorization") String jwt) throws OrderException{
 		orderService.deleteOrder(orderId);
 		ApiResponse res=new ApiResponse("Order Deleted Successfully",true);
-		System.out.println("delete method working....");
 		return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
 	}
 

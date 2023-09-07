@@ -9,26 +9,21 @@ import com.springboot.project.exception.UserException;
 import com.springboot.project.model.Cart;
 import com.springboot.project.model.CartItem;
 import com.springboot.project.model.Product;
-import com.springboot.project.model.Size;
 import com.springboot.project.model.User;
 import com.springboot.project.repository.CartItemRepository;
-import com.springboot.project.repository.CartRepository;
 
 @Service
 public class CartItemServiceImplementation implements CartItemService {
 
     private CartItemRepository cartItemRepository;
     private UserService userService;
-    private CartRepository cartRepository;
 
 
     
 
-    public CartItemServiceImplementation(CartItemRepository cartItemRepository, UserService userService,
-            CartRepository cartRepository) {
+    public CartItemServiceImplementation(CartItemRepository cartItemRepository, UserService userService) {
         this.cartItemRepository = cartItemRepository;
         this.userService = userService;
-        this.cartRepository = cartRepository;
     }
 
     @Override
